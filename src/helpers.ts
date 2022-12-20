@@ -1,6 +1,6 @@
 import type { ITask } from "@/types";
 
-export const helpers = async (delay: number) => {
+export const delay = async (delay: number) => {
   return new Promise<void>((resolve) => {
     setTimeout(() => resolve(), delay);
   });

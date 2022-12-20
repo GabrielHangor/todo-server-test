@@ -1,4 +1,3 @@
-import type { AxiosError } from "axios";
 
 export interface ITask {
   id: string;

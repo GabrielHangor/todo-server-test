@@ -1,6 +1,6 @@
 import type { Ref } from "vue";
 import { ApiClient } from "@/axios";
-import { helpers } from "@/helpers";
+import { delay } from "@/helpers";
 
 export const useApi = (
   pendingRef: Ref<boolean>,
@@ -15,7 +15,7 @@ export const useApi = (
     errorRef.value = null;
     try {
       pendingRef.value = true;
-      await helpers(300);
+      await delay(300);
       const { data: response } = await ApiClient.request({
         method,
         url,
