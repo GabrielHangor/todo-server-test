@@ -6,18 +6,26 @@ import { ApiClient } from "@/axios";
 
 export const useTasks = (taskName: Ref<string | null>) => {
   const tasks = ref<ITask[]>([]);
-  const isLoading = ref<Boolean>;
+  const pending = ref<Boolean>(false);
+  const error = ref(null);
 
   const addTask = async () => {
-    await delay(300);
-    const { data: addedTask } = await ApiClient.post<ITask>("/tasks", {
-      name: taskName.value,
-    });
+    try {
+      pending.value = true;
+      await delay(300);
+      const { data: addedTask } = await ApiClient.post<ITask>("/tasks", {
+        name: taskName.value,
+      });
 
-    tasks.value.push(addedTask);
+      tasks.value.push(addedTask);
 
-    taskName.value = null;
+      taskName.value = null;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      pending.value = false;
+    }
   };
 
-  return { tasks, isLoading, addTask };
+  return { tasks, error, pending, addTask };
 };

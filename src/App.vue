@@ -4,7 +4,7 @@
       <h1 class="todo-form__heading">To Do App</h1>
       <div class="todo-form__input-wrapper">
         <BaseInput v-model="taskName" />
-        <button class="todo-form__add-todo-btn">
+        <button class="todo-form__add-todo-btn" :disabled="pending">
           <img src="/plus-icon.svg" alt="plus-icon" />
         </button>
       </div>
@@ -22,5 +22,5 @@ import { useTasks } from "@/composables/useTasks";
 
 const taskName = ref<string | null>(null);
 
-const { tasks, isLoading, addTask } = useTasks(taskName);
+const { tasks, pending, addTask } = useTasks(taskName);
 </script>

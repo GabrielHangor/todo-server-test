@@ -70,6 +70,11 @@ main {
       img {
         display: inline;
       }
+
+      &:disabled {
+        background-color: gray;
+        cursor: wait;
+      }
     }
 
     hr.dotted {
