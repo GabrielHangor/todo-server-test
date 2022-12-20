@@ -9,7 +9,16 @@
         </button>
       </div>
       <hr class="dotted" />
-      <BaseTask v-for="task in tasks" :key="task.id" :task="task" />
+      <div class="todo-form__tasks-wrapper">
+        <BaseTask
+          v-for="task in tasks"
+          :key="task.id"
+          :task="task"
+          :pending="pending"
+          @toggle-status="toggleTaskStatus"
+          @delete-task="deleteTask"
+        />
+      </div>
     </form>
   </main>
 </template>
@@ -22,5 +31,6 @@ import { useTasks } from "@/composables/useTasks";
 
 const taskName = ref<string | null>(null);
 
-const { tasks, pending, addTask } = useTasks(taskName);
+const { tasks, error, pending, addTask, toggleTaskStatus, deleteTask } =
+  useTasks(taskName);
 </script>

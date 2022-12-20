@@ -1,24 +1,36 @@
-import { ref } from "vue";
-import type { AxiosError, AxiosResponse } from "axios";
+import type { Ref } from "vue";
 import { ApiClient } from "@/axios";
+import { helpers } from "@/helpers";
 
-export const useApi = () => {
-  const data = ref(null);
-  const pending = ref<Boolean>(false);
-  const error = ref<string | null>(null);
-
-  const makeRequest = async (method: string, url: string) => {
+export const useApi = (
+  pendingRef: Ref<boolean>,
+  errorRef: Ref<string | null>
+) => {
+  const makeRequest = async (
+    method: string,
+    url: string,
+    body: object | null,
+    params: object | null
+  ) => {
+    errorRef.value = null;
     try {
-      pending.value = true;
-      const { data: response } = await ApiClient.request({ method, url });
-      data.value = response;
-    } catch (e: any) {
-      console.log(e);
-      error.value = e;
+      pendingRef.value = true;
+      await helpers(300);
+      const { data: response } = await ApiClient.request({
+        method,
+        url,
+        data: body,
+        params,
+      });
+
+      return response;
+    } catch (error: any) {
+      console.log(error);
+      errorRef.value = error.message;
     } finally {
-      pending.value = false;
+      pendingRef.value = false;
     }
   };
 
-  return { data, pending, error, makeRequest };
+  return { makeRequest };
 };
